@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>売上ダッシュボード</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',sans-serif;background:#f8fafc;color:#1e293b;font-size:14px;}
+  .header{background:#1e293b;color:white;padding:1.25rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+  .header h1{font-size:1.25rem;font-weight:700;letter-spacing:.05em;}
+  .header .meta{font-size:.85rem;color:#94a3b8;}
+  .tabs{display:flex;gap:0;padding:1.25rem 2rem 0;}
+  .tab{padding:.6rem 1.5rem;border-radius:8px 8px 0 0;cursor:pointer;font-weight:600;font-size:.9rem;background:#e2e8f0;color:#64748b;border:none;}
+  .tab.active{background:white;color:#1e293b;box-shadow:0 -1px 3px rgba(0,0,0,.07);}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:1.25rem 2rem 0;}
+  .kpi{background:white;border-radius:8px;padding:1.25rem 1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+  .kpi .label{font-size:.75rem;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem;}
+  .kpi .value{font-size:1.55rem;font-weight:700;}
+  .kpi .sub{font-size:.8rem;color:#94a3b8;margin-top:.25rem;}
+  .section{background:white;border-radius:8px;margin:1rem 2rem;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+  .section-title{padding:1rem 1.5rem;font-weight:700;font-size:.95rem;border-bottom:1px solid #f1f5f9;color:#374151;}
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:right;padding:.6rem 1rem;font-size:.75rem;color:#64748b;border-bottom:1px solid #f1f5f9;font-weight:500;}
+  th:first-child{text-align:left;}
+  tr:hover td{background:#f8fafc;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 2rem;}
+  .rep-list{padding:.5rem 1.5rem 1rem;}
+  footer{text-align:center;padding:1.5rem;color:#94a3b8;font-size:.75rem;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 売上ダッシュボード</h1>
+  <div class="meta">2026年06月30日 ／ 営業日 22日 ／ 経過日数 22日</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('overall',this)">全体実績</button>
+  <button class="tab" onclick="switchTab('wott',this)">WOTT実績</button>
+</div>
+
+<!-- ===== 全体実績タブ ===== -->
+<div id="tab-overall" class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">今月実績（全体）</div>
+      <div class="value">¥725,970,104</div>
+      <div class="sub">目標 ¥758,807,500</div>
+    </div>
+    <div class="kpi">
+      <div class="label">達成率</div>
+      <div class="value" style="color:#f59e0b;">95.7%</div>
+      <div class="sub">LAP 95.7%</div>
+    </div>
+    <div class="kpi">
+      <div class="label">本日実績</div>
+      <div class="value">¥78,759,339</div>
+      <div class="sub">日別目標 ¥116,460,233</div>
+    </div>
+    <div class="kpi">
+      <div class="label">今月売上あり担当者</div>
+      <div class="value">36名</div>
+      <div class="sub">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">グループ別 目標進捗</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left;">グループ</th>
+          <th>今月目標</th>
+          <th>今月実績</th>
+          <th>達成率</th>
+          <th>本日実績</th>
+          <th>本日残</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:0.6rem 1rem;font-weight:600;">全体</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥758,807,500</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-weight:600;">¥725,970,104</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:95.7%;background:#f59e0b;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#f59e0b;min-width:52px;">95.7%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥78,759,339</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥37,700,894</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">美容サロン 北海道</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥11,160,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥13,939,410</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#10b981;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#10b981;min-width:52px;">124.9%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥731,908</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-2,779,410</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">美容サロン 東京</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥177,320,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥189,553,126</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#3b82f6;min-width:52px;">106.9%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥15,050,317</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-12,380,126</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">美容サロン 大阪</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥56,590,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥56,999,250</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#3b82f6;min-width:52px;">100.7%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥5,685,396</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-409,250</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">美容サロン 福岡</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥21,520,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥28,742,331</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#10b981;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#10b981;min-width:52px;">133.6%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥4,568,312</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-7,222,331</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">治療院・フィットネスG</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥102,000,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥107,876,520</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#3b82f6;min-width:52px;">105.8%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥31,363,667</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-5,876,520</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">ディーラー</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥52,140,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥55,243,607</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#3b82f6;min-width:52px;">106.0%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥1,041,930</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-3,102,807</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">フィールドセールス</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥16,800,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥3,673,800</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:21.9%;background:#ef4444;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#ef4444;min-width:52px;">21.9%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥0</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥13,126,200</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;font-weight:600;">CSG 合計</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥437,530,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-weight:600;">¥456,028,044</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#3b82f6;min-width:52px;">104.2%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥58,441,530</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#10b981;">¥-18,644,244</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">経営戦略本部</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥4,250,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥3,463,860</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:81.5%;background:#ef4444;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#ef4444;min-width:52px;">81.5%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥65,360</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥786,140</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;padding-left:1.5rem;">営業戦略事業部</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥36,000,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥10,366,810</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:28.8%;background:#ef4444;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#ef4444;min-width:52px;">28.8%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥171,760</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥26,094,371</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;font-weight:600;">国内 BtoB</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥480,202,500</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-weight:600;">¥471,809,554</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:98.3%;background:#f59e0b;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#f59e0b;min-width:52px;">98.3%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥58,678,650</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥8,707,927</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">海外</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥100,000,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥54,688,918</td>
+          <td style="padding:0.6rem 1rem;min-width:160px;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="flex:1;background:#e2e8f0;border-radius:4px;height:8px;">
+                <div style="width:54.7%;background:#ef4444;border-radius:4px;height:8px;"></div>
+              </div>
+              <span style="font-size:0.85rem;font-weight:600;color:#ef4444;min-width:52px;">54.7%</span>
+            </div>
+          </td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥18,608,216</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;color:#ef4444;">¥45,311,082</td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <div class="two-col">
+    <div class="section" style="margin:0;">
+      <div class="section-title">営業担当者 今月実績ランキング（TOP20）</div>
+      <div class="rep-list">
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">🥇</span>
+          <span style="min-width:5rem;font-weight:500;">増田</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:100.0%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥41,199,519</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">🥈</span>
+          <span style="min-width:5rem;font-weight:500;">後藤</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:85.5%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥35,228,077</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">🥉</span>
+          <span style="min-width:5rem;font-weight:500;">大石</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:63.3%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥26,093,392</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">4.</span>
+          <span style="min-width:5rem;font-weight:500;">堀米</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:59.2%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥24,406,515</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">5.</span>
+          <span style="min-width:5rem;font-weight:500;">三澤</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:56.1%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥23,126,126</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">6.</span>
+          <span style="min-width:5rem;font-weight:500;">田代</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:55.8%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥22,993,616</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">7.</span>
+          <span style="min-width:5rem;font-weight:500;">光枝</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:53.9%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥22,221,119</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">8.</span>
+          <span style="min-width:5rem;font-weight:500;">小平</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:46.5%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥19,151,006</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">9.</span>
+          <span style="min-width:5rem;font-weight:500;">渡邊</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:45.2%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥18,606,034</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">10.</span>
+          <span style="min-width:5rem;font-weight:500;">鳴海</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:44.7%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥18,425,029</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">11.</span>
+          <span style="min-width:5rem;font-weight:500;">川端</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:44.6%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥18,392,984</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">12.</span>
+          <span style="min-width:5rem;font-weight:500;">高橋</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:44.1%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥18,158,021</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">13.</span>
+          <span style="min-width:5rem;font-weight:500;">中山</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:39.2%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥16,136,521</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">14.</span>
+          <span style="min-width:5rem;font-weight:500;">出利葉</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:38.5%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥15,854,349</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">15.</span>
+          <span style="min-width:5rem;font-weight:500;">米村</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:35.4%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥14,576,264</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">16.</span>
+          <span style="min-width:5rem;font-weight:500;">宮本</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:35.3%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥14,537,265</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">17.</span>
+          <span style="min-width:5rem;font-weight:500;">加藤</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:33.9%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥13,972,088</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">18.</span>
+          <span style="min-width:5rem;font-weight:500;">大和谷</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:33.7%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥13,870,565</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">19.</span>
+          <span style="min-width:5rem;font-weight:500;">榊枝</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:28.5%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥11,745,688</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;">
+          <span style="min-width:2rem;font-size:0.9rem;">20.</span>
+          <span style="min-width:5rem;font-weight:500;">影山</span>
+          <div style="flex:1;background:#e2e8f0;border-radius:4px;height:6px;">
+            <div style="width:26.5%;background:#3b82f6;border-radius:4px;height:6px;"></div>
+          </div>
+          <span style="min-width:7rem;text-align:right;font-size:0.9rem;font-weight:600;">¥10,924,428</span>
+        </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== WOTTタブ ===== -->
+<div id="tab-wott" class="tab-content">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="label">WOTT 総合計</div>
+      <div class="value">—</div>
+      <div class="sub">&nbsp;</div>
+    </div>
+    <div class="kpi">
+      <div class="label">WOTT 在庫数</div>
+      <div class="value">712 台</div>
+      <div class="sub">&nbsp;</div>
+    </div>
+    <div class="kpi">
+      <div class="label">WOTT 販売台数（合計）</div>
+      <div class="value">0 台</div>
+      <div class="sub">レンタル含まず</div>
+    </div>
+    <div class="kpi">
+      <div class="label">レンタル 台数</div>
+      <div class="value">0 台</div>
+      <div class="sub">¥0</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">チャネル別 WOTT販売実績</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left;">チャネル</th>
+          <th>台数</th>
+          <th>金額</th>
+          <th>その他金額</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:0.6rem 1rem;">美容サロン 北海道</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">8 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥5,612,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">美容サロン 東京</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">48 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥33,269,500</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥1,264,880</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">美容サロン 大阪</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">15 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥10,530,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥217,620</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">美容サロン 福岡</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">7 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥4,888,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥270,500</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">治療院・フィットネス</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">11 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥8,554,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥912,640</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">ディーラー</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">9 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥5,994,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥151,740</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">フィールドセールス</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">1 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥975,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥448,800</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">経営戦略本部</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">3 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥2,932,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">営業戦略事業部</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">2 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥2,145,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥384,600</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">海外</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">1 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥910,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥188,200</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">グランプロ睡眠美容クリニック</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">1 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥500,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">IS</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">9 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥9,585,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥121,000</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">FC</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">0 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥0</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">INSEA</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">0 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥0</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">プロラボスパ</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">1 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥500,000</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥8,100</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;">社販</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">118 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;">¥87,694,500</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;">¥3,984,280</td>
+        </tr>
+        <tr>
+          <td style="padding:0.6rem 1rem;font-weight:700;border-top:2px solid #e2e8f0;">合計</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-weight:700;border-top:2px solid #e2e8f0;">0 台</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-weight:700;border-top:2px solid #e2e8f0;">¥0</td>
+          <td style="text-align:right;padding:0.6rem 1rem;font-size:0.85rem;border-top:2px solid #e2e8f0;">—</td>
+        </tr></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">レンタル</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left;">種別</th>
+          <th>台数</th>
+          <th>金額</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:0.5rem 1rem;">ISレンタル</td>
+          <td style="text-align:right;padding:0.5rem 1rem;">53 台</td>
+          <td style="text-align:right;padding:0.5rem 1rem;">¥530,000</td>
+          <td style="padding:0.5rem 1rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem 1rem;">BtoBレンタル</td>
+          <td style="text-align:right;padding:0.5rem 1rem;">61 台</td>
+          <td style="text-align:right;padding:0.5rem 1rem;">¥610,000</td>
+          <td style="padding:0.5rem 1rem;">—</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem 1rem;font-weight:700;">合計</td>
+          <td style="text-align:right;padding:0.5rem 1rem;font-weight:700;">0 台</td>
+          <td style="text-align:right;padding:0.5rem 1rem;font-weight:700;">¥0</td>
+          <td style="padding:0.5rem 1rem;">—</td>
+        </tr></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>自動生成 by generate_dashboard.py ／ データソース: 【24期】6月目標進捗表.xlsx</footer>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
